@@ -5,6 +5,8 @@ from forms import UserForm, LoginForm, FeedbackForm
 from helpers import Helpers
 from flask_mail import Mail, Message
 from secrets import token_urlsafe
+import os
+
 
 app = Flask(__name__)
 
@@ -12,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI']='postgresql:///feedback'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
-app.config['SECRET_KEY'] = 'ohsosecret'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY','shh')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS']= False
 debug=DebugToolbarExtension(app)
 

@@ -22,6 +22,7 @@ class User(db.Model):
                       nullable=False, unique=True)
     first_name=db.Column(db.Text, nullable=False)
     last_name=db.Column(db.Text, nullable=False)
+    password_reset_token=db.Column(db.Text)
     
     feedback=db.relationship('Feedback',
                              back_populates="author",

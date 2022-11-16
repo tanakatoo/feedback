@@ -32,6 +32,8 @@ MAIL_PASSWORD = 'stupidKT777!'
 mail = Mail(app)
 connect_db(app)
 
+db.create_all()
+
 @app.route('/password-reset', methods=['GET','POST'])
 def email():
     if request.method=='GET':

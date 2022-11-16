@@ -3,7 +3,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Feedback
 from forms import UserForm, LoginForm, FeedbackForm
 from helpers import Helpers
-from flask_mail import Mail, Message
 from secrets import token_urlsafe
 import os
 import re
@@ -23,43 +22,37 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY','shh')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS']= False
 debug=DebugToolbarExtension(app)
 
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
-MAIL_USERNAME = 'karmen.tanaka@gmail.com'
-MAIL_PASSWORD = 'stupidKT777!'
-mail = Mail(app)
+
 connect_db(app)
 
 db.create_all()
 
-@app.route('/password-reset', methods=['GET','POST'])
-def email():
-    if request.method=='GET':
-        s=token_urlsafe()
-        print('*********')
-        print(s)
-        return render_template('password_reset.html')
-    else:
-        email=request.form['email']
-        email_valid=User.query.filter_by(email=email).first()
-        if email_valid:
-            # send email to reset password
-            s=token_urlsafe()
-            print('*********')
-            print(s)
-            msg=Message("hello", sender="karmen.tanaka@gmail.com",recipients=["karmen.tanaka@gmail.com"])
+# @app.route('/password-reset', methods=['GET','POST'])
+# def email():
+#     if request.method=='GET':
+#         s=token_urlsafe()
+#         print('*********')
+#         print(s)
+#         return render_template('password_reset.html')
+#     else:
+#         email=request.form['email']
+#         email_valid=User.query.filter_by(email=email).first()
+#         if email_valid:
+#             # send email to reset password
+#             s=token_urlsafe()
+#             print('*********')
+#             print(s)
+#             msg=Message("hello", sender="karmen.tanaka@gmail.com",recipients=["karmen.tanaka@gmail.com"])
           
-            msg.body = "hello from text"
-            msg.html = "<h1>hello from html</h1>"
-            mail.send(msg)
-            mail.send(msg)
-            flash('password email is sent')
-            return redirect('/login')
-        else:
-            flash('you are not registered yet')
-            return redirect('/password-reset')
+#             msg.body = "hello from text"
+#             msg.html = "<h1>hello from html</h1>"
+#             mail.send(msg)
+#             mail.send(msg)
+#             flash('password email is sent')
+#             return redirect('/login')
+#         else:
+#             flash('you are not registered yet')
+#             return redirect('/password-reset')
 
 @app.route('/')
 def home():

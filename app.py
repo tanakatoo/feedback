@@ -6,11 +6,16 @@ from helpers import Helpers
 from flask_mail import Mail, Message
 from secrets import token_urlsafe
 import os
-
+import re
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL','postgresql:///feedback')
+uri = os.environ.get('DATABASE_URL', 'postgresql:///feedback')
+if uri.startswith("postgres://"):
+ uri = uri.replace("postgres://", "postgresql://", 1)
+# rest of connection code using the connection string `uri`
+
+app.config['SQLALCHEMY_DATABASE_URI']=uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
